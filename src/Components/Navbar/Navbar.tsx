@@ -1,7 +1,5 @@
 import React from "react";
 import {
-
-
     StyleSheet,
     Image,
     Text,
@@ -9,6 +7,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import {Searchbar} from 'react-native-paper';
+
 
 export default function Navbar({navigation,isHome}) {
     const [searchQuery,
