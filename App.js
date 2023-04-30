@@ -19,7 +19,7 @@ export default function App() {
             <NavigationContainer>
                 <StatusBar backgroundColor='gray'/>
                 <Stack.Navigator  screenOptions={({route})=>
-                  
+              
 
                       ({headerShown:route.name === 'Home' ?  false : true})
   }>
