@@ -10,15 +10,17 @@ import {
     View,
     TouchableOpacity,
   } from 'react-native';
+import Navbar from '../../Components/Navbar/Navbar';
 
   
-const Home = () => {
+const Home = ({navigation, route}) => {
   return (
-    <View>
+    <SafeAreaView>
+        <Navbar isHome={route.name === 'Home'} navigation={navigation}/>
         <Text>
             hello from home
         </Text>
-    </View>
+    </SafeAreaView>
   )
 }
 
