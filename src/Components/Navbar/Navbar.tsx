@@ -17,7 +17,7 @@ export default function Navbar({navigation,isHome}) {
     return (
         <View
             style={{
-            marginTop:isHome ? 25 : 0,
+            marginTop:isHome ? 0 : 30,
             borderBottomColor: '#f3f3f3',
             display: 'flex',
             height: 'auto',
@@ -65,7 +65,7 @@ export default function Navbar({navigation,isHome}) {
             }}
                 onChangeText={onChangeSearch}
                 value={searchQuery}/>
-            <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Product')}>
                 <Image
                     style={{
                     width: 50,

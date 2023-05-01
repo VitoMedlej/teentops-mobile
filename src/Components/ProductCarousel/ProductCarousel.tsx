@@ -12,18 +12,29 @@ import {Button} from 'react-native-paper';
 
 import Carousel from 'react-native-snap-carousel';
 
-const ProductCard = (props) => {
-    const item = props.item
-    return <View style={{
+export const ProductCard = ({imgWidth,styles,item,width,navigation}:{
+    styles?:any,
+    imgWidth?:number,
+    item:{img:string,title:string,price:number},width:string|number|any,navigation :any
+}) => {
+    return  <TouchableOpacity  onPress={() => navigation.navigate('Product')}>
+
+        
+    
+    <View 
+    
+    style={{
         backgroundColor: 'white',
-        width: 200
+        width: 200,
+        marginVertical:5,
+        ...styles,
     }}>
 
             <Image
                 style={{
                 display: 'flex',
                 alignContent: 'center',
-                width: Number(props.width / 2) - 6,
+                width: imgWidth ? imgWidth :  Number(width / 2) - 6,
                 maxWidth: 200,
                 height: 200
             }}
@@ -33,18 +44,29 @@ const ProductCard = (props) => {
             }}/>
             <Text
                 style={{
+                    fontSize:12,
+                    paddingVertical:4,
+                    fontWeight: '800',
+            }}>
+                Applieances
+            </Text>
+            <Text
+                style={{
+                fontSize:16,
                 fontWeight: '300',
-                paddingTop: 10
             }}>
                 {item.title}
             </Text>
             <Text style={{
-                fontWeight: '600'
+                fontWeight: '900',
+                paddingTop:2,
             }}>
                 ${item.price}
             </Text>
 
     </View>
+    </TouchableOpacity> 
+
 
 }
 export const products = [
@@ -75,7 +97,7 @@ export const products = [
     }
 ]
 
-const ProductCarousel = ({title,screenDimensions,products}) => {
+const ProductCarousel = ({title,screenDimensions,products,navigation}) => {
   return (
     <View
                         style={{
@@ -120,9 +142,10 @@ const ProductCarousel = ({title,screenDimensions,products}) => {
                                 loop
                                 enableMomentum={true}
                                 autoplay
-                                renderItem={(props) => ProductCard({
-                                ...props,
-                                width: screenDimensions
+                                renderItem={({item}) => ProductCard({
+                                    item,
+                                width: screenDimensions,
+                                navigation
                             })}
                                 sliderWidth={screenDimensions}
                                 itemWidth={screenDimensions * 0.5}/>

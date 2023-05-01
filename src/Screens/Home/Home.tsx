@@ -133,7 +133,9 @@ const Home = ({navigation, route}) => {
                             style={{
                             height: 100
                         }}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>{
+                                navigation.navigate('Products')
+                            }}>
 
                                 <Image
                                     style={{
@@ -152,6 +154,8 @@ const Home = ({navigation, route}) => {
                 {[1, 2].map(i => {
 
                     return <ProductCarousel
+                    navigation={navigation}
+
                         title="New Arrivals"
                         key={i}
                         products={products}
@@ -189,12 +193,13 @@ const Home = ({navigation, route}) => {
                 }}>
 
                     {categoryImage.map(item => {
-                        return <SmallItem screenDimensions={screenDimensions} item={item}/>
+                        return <SmallItem key={item.img} screenDimensions={screenDimensions} item={item}/>
                     })
 }
                 </View>
 
                 <ProductCarousel
+                    navigation={navigation}
                     title="New Arrivals"
                     products={products}
                     screenDimensions={screenDimensions}/>
@@ -202,6 +207,7 @@ const Home = ({navigation, route}) => {
                   <Item height={240} imgHeight={240} width={screenDimensions} item={{img:'https://www.ishtari.com/image/data/system_banner/10000/1800/1719/homepage-automotive-app.png'}} />
                   <Item height={240} imgHeight={240} width={screenDimensions} item={{img:'https://www.ishtari.com/image/data/system_banner/10000/1800/1703/electronic-banne-app.png'}} />
                   <ProductCarousel
+                    navigation={navigation}
                     title="New Arrivals"
                     products={products}
                     screenDimensions={screenDimensions}/>
