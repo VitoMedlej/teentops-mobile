@@ -28,7 +28,7 @@ const Products = ({navigation}) => {
             alignItems: 'center',
             alignContent: 'center',
             justifyContent: 'center',
-            borderBottomColor:'#cdcdcd',borderBottomWidth:1,
+            // borderBottomColor:'#cdcdcd',borderBottomWidth:1,
         }}>
             <Searchbar
                 style={{
@@ -54,7 +54,7 @@ const Products = ({navigation}) => {
                 
                 }}
                 imgWidth={200}
-                key={i} item={{title:'XYZ name' ,price:12.99,img:'https://www.ishtari.com/image/cache/data/system_product/90000/86000/85979/1-192x264.jpg?2'}} width={screenDimensions / 2.1} navigation={navigation}/>
+                key={i} item={{title:'XYZ name' ,price:12.99,img:'https://ucarecdn.com/99054dfd-cf85-4e50-a6ff-4abed39fc4fe/'}} width={screenDimensions / 2.1} navigation={navigation}/>
             })}
         </View>
     </ScrollView> 

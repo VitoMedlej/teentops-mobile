@@ -9,6 +9,7 @@ import {
     View,
     TouchableOpacity,
     Dimensions,
+    Linking,
   } from 'react-native';
   import {SafeAreaView, SafeAreaProvider, SafeAreaInsetsContext, useSafeAreaInsets, initialWindowMetrics} from 'react-native-safe-area-context';
 import Navbar from '../../Components/Navbar/Navbar';
@@ -83,7 +84,17 @@ const CartList = () => {
                           Continue Shopping
                           </Text>
                         </Button>
-                        <Button icon='cart' textColor='white' style={{backgroundColor:'#6145ff',borderWidth:1,borderColor:'#6145ff',borderRadius:4,marginHorizontal:5}}>
+                        <Button 
+                        onPress={()=>{
+                          Linking.openURL(`whatsapp://send?text=Hello, I would like to place an order:${
+                            ['name1','name2','name3','اسم',''].map(i=>{
+                              if (i?.length < 1) return;
+                              return `\n${i}`
+                            })
+                          }
+                          &phone=96181826445`)
+                        }}
+                        icon='cart' textColor='white' style={{backgroundColor:'#6145ff',borderWidth:1,borderColor:'#6145ff',borderRadius:4,marginHorizontal:5}}>
                           <Text style={{color:'white'}}>
                           Checkout Now
                           </Text>

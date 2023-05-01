@@ -12,7 +12,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import {Button} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Product from './src/Screens/Stack/Product/Product';
-
+import Categories from './src/Screens/Categories/Categories';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -57,6 +57,15 @@ export default function App() {
                     name="Home" component={HomeStack}/>
 
 
+<Tab.Screen
+options={{
+ tabBarLabel: 'Categories',
+ tabBarIcon: ({ color }) => (
+     <MaterialCommunityIcons name="cube-outline" color={color} size={26} />
+     
+ ),
+}}
+name="Categories" component={Categories}/>
                     <Tab.Screen
                     options={{
                         tabBarLabel: 'Cart',
@@ -68,16 +77,7 @@ export default function App() {
                     name="Cart" component={Cart}/>
                 
 
-                       <Tab.Screen
-                    options={{
-                        tabBarLabel: 'Categories',
-                        tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons name="cube-outline" color={color} size={26} />
-                            
-                        ),
-                      }}
-                    name="Categories" component={Cart}/>
-                            <Tab.Screen
+                            {/* <Tab.Screen
                                 options={{
                                     tabBarLabel: 'Settings',
                                     tabBarIcon: ({ color }) => (
@@ -85,7 +85,7 @@ export default function App() {
                                         
                                     ),
                                   }}
-                                name="Settings" component={Cart}/>
+                                name="Settings" component={Cart}/> */}
 
                     
                 </Tab.Navigator>

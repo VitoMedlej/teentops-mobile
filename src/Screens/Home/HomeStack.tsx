@@ -20,7 +20,7 @@ const config = {
   },
 };
 const HomeStack = () => {
-    const route = useRoute();
+    // const route = useRoute();
   return (
 
     <>
