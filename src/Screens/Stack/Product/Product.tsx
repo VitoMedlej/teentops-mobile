@@ -1,15 +1,13 @@
-import React, { useState } from 'react'
+import React, {  useState } from 'react'
 import {Text,Image, TouchableOpacity, View, ScrollView } from 'react-native'
-import Navbar from '../../../Components/Navbar/Navbar'
-import { Item } from 'react-native-paper/lib/typescript/src/components/Drawer/Drawer'
 import Carousel    from 'react-native-snap-carousel'
 import {Pagination}   from 'react-native-snap-carousel'
-import { products } from '../../../Components/ProductCarousel/ProductCarousel'
 import { Dimensions } from 'react-native'
-import { Divider ,Button} from 'react-native-paper'
+import { Divider ,Button, Snackbar} from 'react-native-paper'
+import {  pushState, saveState } from '../../../Utils/Local'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-
-
+export interface ProductType{title:string,category?:string,images:string[],_id:string,price:number,description?:string}
 const ItemImages = ({width,height,imgHeight,item}) => {
     return <>
     
@@ -38,7 +36,7 @@ const ItemImages = ({width,height,imgHeight,item}) => {
 }
 const CarouselPagination = ({activeDotIndex}) => {
     return <Pagination
-            dotsLength={Number(products.length || 1)}
+            dotsLength={Number([1,2,3].length || 1)}
               activeDotIndex={activeDotIndex}
               activeOpacity={1}
               inactiveDotOpacity={0.4}
@@ -56,18 +54,39 @@ const CarouselPagination = ({activeDotIndex}) => {
               inactiveDotScale={0.6}
             />
 }
-const Product = ({navigation}) => {
+const Product = ({navigation,products}:{products:ProductType[],navigation:any}) => {
+    
     const screenDimensions = Number(Dimensions.get('screen').width) || 350;
     const [activeDotIndex,setActiveDotIndex] = useState(0)
+    const [Active,setActive] = useState(false)
+
+  
+    
+    const addToCart = async (_id:string,product:ProductType) => {
+       
+      const value = await  AsyncStorage.getItem('usercart2');
+        if (!value) {
+            saveState('usercart2',product)
+            return
+        }        
+        pushState('usercart2',
+        {...product,qty:1})
+    }
+
   return (
 <>
     <ScrollView >
+        
         <Carousel
-       removeClippedSubviews={false}
+     
                     data={products}
-                    loop
-                    autoplay
-                    
+                    inactiveSlideOpacity={1}
+                    inactiveSlideScale={1}
+                    activeSlideAlignment={'start'}
+                    removeClippedSubviews={false}                    
+                    enableMomentum={true}
+                      loop
+                      autoplay
                     renderItem={(props) => ItemImages({
                     ...props,
                     width: screenDimensions
@@ -77,6 +96,7 @@ const Product = ({navigation}) => {
                     itemWidth={screenDimensions}
                     useScrollView={false}/>
         <CarouselPagination activeDotIndex={activeDotIndex}/>
+
 
 
         <View style={{paddingHorizontal:10, backgroundColor:'white'}}>
@@ -90,11 +110,14 @@ const Product = ({navigation}) => {
                     $20
             </Text>
 
-            
-
                 <TouchableOpacity>
 
-            <Button style={{borderWidth:1,marginTop:16,borderColor:'#6145ff'}}>
+            <Button 
+            onPress={()=>
+            {    addToCart('usercart2',{title:'new',category:'xyz',images:['foo'],_id:'222',price:100,description:'fooe'}),
+                setActive(true)}
+            }
+            style={{borderWidth:1,marginTop:16,borderColor:'#6145ff'}}>
                 <Text style={{color:'#6145ff'}}>
                 Add To Cart
                 </Text>
@@ -111,6 +134,23 @@ const Product = ({navigation}) => {
                 </Text>
             </Button>
                 </TouchableOpacity>
+                <View>
+<Snackbar
+        visible={Active}
+        onDismiss={()=>setActive(false)}
+        duration={3000}
+        style={{backgroundColor:'green'}}
+        action={{
+          label: 'View Cart',
+          onPress: () => {
+            navigation.navigate('Cart');
+            setActive(false)
+            // Do something
+          },
+        }}>
+       Item Added To Cart!
+      </Snackbar>
+</View>
 
     </View>
    
@@ -146,6 +186,9 @@ const Product = ({navigation}) => {
                         No Reviews Yet
             </Text>
     </View>
+  
+      
+
     </ScrollView>
 </>
 

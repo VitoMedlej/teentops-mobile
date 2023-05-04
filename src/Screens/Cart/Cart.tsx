@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   
     Platform,
@@ -14,6 +14,8 @@ import {
   import {SafeAreaView, SafeAreaProvider, SafeAreaInsetsContext, useSafeAreaInsets, initialWindowMetrics} from 'react-native-safe-area-context';
 import Navbar from '../../Components/Navbar/Navbar';
 import { Button } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ProductType } from '../Stack/Product/Product';
 
 
 
@@ -38,7 +40,7 @@ const EmptyCart = ({screenHeight}) => {
   </Text>
 </View>
 }
-const CartList = () => {
+const CartList = ({cartItems}: {cartItems:any[]})  => {
   return <>
   
   <View style={{padding:5,marginVertical:10,paddingVertical:10,backgroundColor:'white'}}>
@@ -46,7 +48,11 @@ const CartList = () => {
       My Cart
     </Text>
   
-  <View style={{display:'flex',borderBottomWidth:1,borderColor:'#e6e6e6',margin:5,backgroundColor:'white',
+ {cartItems && cartItems.length > 0 && 
+ 
+ cartItems.map(item=>{ return <View 
+  key={item.img}
+  style={{display:'flex',borderBottomWidth:1,borderColor:'#e6e6e6',margin:5,backgroundColor:'white',
   flexDirection:'row'
   }}>
     <Image
@@ -57,21 +63,22 @@ const CartList = () => {
                         }}
                             resizeMode={'cover'}
                             source={{
-                            uri: 'https://ucarecdn.com/74ada732-9dbd-4f77-83c4-3b9af9cf3889/'
+                            uri: `${item.img}` || 'https://ucarecdn.com/74ada732-9dbd-4f77-83c4-3b9af9cf3889/'
                         }}/>
 
                         <View style={{marginHorizontal:10,marginVertical:5}}>
                           <Text style={{color:'black',fontWeight:'300',maxWidth:250,paddingBottom:4,fontSize:19}}>
-                          Add some products to your cart.
+                         {item?.title || 'Product Name'}
                           </Text>
                           <Text style={{fontWeight:'500'}}>
-                          $20
+                          ${item?.price}
                           </Text>
                           <Button textColor={'red'}  style={{display:'flex',padding:0}}>
                             Delete
                           </Button>
                         </View>
   </View>
+  })}
 
 
   </View>
@@ -104,13 +111,27 @@ const CartList = () => {
 
 }
 const Cart = ({navigation}) => {
+
   const screenDimensions = Number(Dimensions.get('screen').width) || 350;
   const screenHeight = Number(Dimensions.get('screen').height) || 650;
+  const [cartItems,setItems] =  useState([])
 
+
+  const fetcher = async ()  => {
+    let value    = await  AsyncStorage.getItem('usercart2');
+  if (!value) {setItems([]); return};
+    let array : ProductType[] | [] = value ? JSON.parse(value) : [];
+    setItems(array)
+  }
+  useEffect(() => {
+    fetcher()
+
+  }, [])
+  
   return (
     <SafeAreaView>
       <Navbar navigation={navigation} isHome={true} />
-   {false? <EmptyCart screenHeight={screenHeight}/> : <CartList/>}
+   {cartItems.length < 1 ? <EmptyCart screenHeight={screenHeight}/> : <CartList cartItems={cartItems}/>}
     </SafeAreaView>
   )
 }

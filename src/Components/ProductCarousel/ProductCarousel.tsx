@@ -1,26 +1,22 @@
 import React from 'react'
 import {
-    SafeAreaView,
-    ScrollView,
     Image,
-    Dimensions,
     Text,
     View,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 import {Button} from 'react-native-paper';
 
 import Carousel from 'react-native-snap-carousel';
+import { ProductType } from '../../Screens/Stack/Product/Product';
 
 export const ProductCard = ({imgWidth,styles,item,width,navigation}:{
     styles?:any,
     imgWidth?:number,
-    item:{img:string,title:string,price:number},width:string|number|any,navigation :any
+    item:{images:string[],title:string,price:number,_id},width:string|number|any,navigation :any
 }) => {
-    return  <TouchableOpacity  onPress={() => navigation.navigate('Product')}>
-
-        
     
+    return <TouchableOpacity key={item._id}  onPress={() => navigation.navigate('Product')}>
     <View 
     
     style={{
@@ -40,7 +36,7 @@ export const ProductCard = ({imgWidth,styles,item,width,navigation}:{
             }}
                 resizeMode={'contain'}
                 source={{
-                uri: `${item.img}`
+                uri: `${item.images[0]}`
             }}/>
             <Text
                 style={{
@@ -69,35 +65,41 @@ export const ProductCard = ({imgWidth,styles,item,width,navigation}:{
 
 
 }
-export const products = [
-    {
-        img: `https://www.ishtari.com/image/cache/data/system_product/40000/39400/39396/01-192x264.jpg?2`,
-        title: 'Sonifier Electric Coil Double head',
-        price: 120,
-        category: 'Coffe Maker',
-        id: '1241251hifaqwr'
-    }, {
-        img: `https://www.ishtari.com/image/cache/data/system_product/40000/39400/39396/01-192x264.jpg?2`,
-        title: 'Sonifier Electric Coil Double head',
-        price: 120,
-        category: 'Coffe Maker',
-        id: '1241251hifaqwr'
-    }, {
-        img: `https://ucarecdn.com/a774d2b8-0f51-433a-8586-d93e1e9cf191/`,
-        title: 'Sonifier Electric Coil Double head',
-        price: 120,
-        category: 'Coffe Maker',
-        id: '1241251hifaqwr'
-    }, {
-        img: `https://ucarecdn.com/2fded1c6-2953-4cf7-8928-8ddadfe81ec3/`,
-        title: 'Sonifier Electric Coil Double head',
-        price: 120,
-        category: 'Coffe Maker',
-        id: '1241251hifaqwr'
-    }
-]
+// export const products = [
+//     {
+//         img: `https://www.ishtari.com/image/cache/data/system_product/40000/39400/39396/01-192x264.jpg?2`,
+//         title: 'Sonifier Electric Coil Double head',
+//         price: 120,
+//         category: 'Coffe Maker',
+//         _id: '12613613aqwr'
+//     }, {
+//         img: `https://www.ishtari.com/image/cache/data/system_product/40000/39400/39396/01-192x264.jpg?2`,
+//         title: 'Sonifier Electric Coil Double head',
+//         price: 120,
+//         category: 'Coffe Maker',
+//         _id: '12411faqwr'
+//     }, {
+//         img: `https://ucarecdn.com/a774d2b8-0f51-433a-8586-d93e1e9cf191/`,
+//         title: 'Sonifier Electric Coil Double head',
+//         price: 120,
+//         category: 'Coffe Maker',
+//         _id: '1241252wr'
+//     }, {
+//         img: `https://ucarecdn.com/2fded1c6-2953-4cf7-8928-8ddadfe81ec3/`,
+//         title: 'Sonifier Electric Coil Double head',
+//         price: 120,
+//         category: 'Coffe Maker',
+//         _id: '124125116qwr'
+//     }
+// ]
 
-const ProductCarousel = ({title,screenDimensions,products,navigation}) => {
+const ProductCarousel = ({title,ItemOnly,screenDimensions,products,navigation}:{
+    title : string,
+    ItemOnly ?: boolean,
+    screenDimensions : number,
+    products : ProductType[],
+    navigation : any
+}) => {
   return (
     <View
                         style={{
@@ -131,26 +133,47 @@ const ProductCarousel = ({title,screenDimensions,products,navigation}) => {
                                 </Button>
                             </TouchableOpacity>
                         </View>
+                        {!ItemOnly ?    
+                        <View>
 
-                        <View >
-                            <Carousel
+                        <Carousel
                                 data={products}
                                 inactiveSlideOpacity={1}
                                 inactiveSlideScale={1}
                                 activeSlideAlignment={'start'}
                                 removeClippedSubviews={false}
-                                loop
+                                // loop
                                 enableMomentum={true}
                                 autoplay
                                 renderItem={({item}) => ProductCard({
                                     item,
                                 width: screenDimensions,
                                 navigation
-                            })}
+                            })}           
                                 sliderWidth={screenDimensions}
                                 itemWidth={screenDimensions * 0.5}/>
-
                         </View>
+
+                            :
+
+                         
+                        <View style={{display:'flex',flexWrap:'wrap',flexDirection:'row'}}>
+                         
+                    {  products.map(product=>{
+
+                       return <ProductCard
+                       key={product._id}
+                        item={product}
+                        width= {screenDimensions}
+                        navigation={navigation}
+                        />
+                    })}
+                       
+                    
+                            
+                            </View>
+
+                    }
                     </View>
   )
 }
