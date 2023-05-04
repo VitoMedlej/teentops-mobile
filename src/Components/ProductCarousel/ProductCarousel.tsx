@@ -13,18 +13,18 @@ import { ProductType } from '../../Screens/Stack/Product/Product';
 export const ProductCard = ({imgWidth,styles,item,width,navigation}:{
     styles?:any,
     imgWidth?:number,
-    item:{images:string[],title:string,price:number,_id},width:string|number|any,navigation :any
+    item:{images:string[],category:string,title:string,price:number,_id},width:string|number|any,navigation :any
 }) => {
     
-    return <TouchableOpacity key={item._id}  onPress={() => navigation.navigate('Product')}>
+    return <TouchableOpacity key={item._id}  onPress={() => navigation.navigate('Product',{ item })}>
     <View 
-    
     style={{
         backgroundColor: 'white',
-        width: 200,
+        width: width ? width : 200,
         marginVertical:5,
         ...styles,
     }}>
+
 
             <Image
                 style={{
@@ -38,24 +38,34 @@ export const ProductCard = ({imgWidth,styles,item,width,navigation}:{
                 source={{
                 uri: `${item.images[0]}`
             }}/>
-            <Text
+            <View
                 style={{
-                    fontSize:12,
-                    paddingVertical:4,
-                    fontWeight: '800',
             }}>
-                Applieances
-            </Text>
-            <Text
+                <Text style={{
+                     paddingVertical:4,
+
+                }}>
+                {item.category}
+                </Text>
+                <Text
+                 numberOfLines={2} 
                 style={{
-                fontSize:16,
-                fontWeight: '300',
-            }}>
+                    width : 200,
+                     fontSize:19,
+                     fontWeight: '700',
+                     textAlign:'left'
+                }}>
+
                 {item.title}
-            </Text>
+
+                </Text>
+                
+            </View>
+      
             <Text style={{
                 fontWeight: '900',
-                paddingTop:2,
+                paddingVertical:2,
+                textAlign:'left',color:'green'
             }}>
                 ${item.price}
             </Text>
@@ -133,8 +143,7 @@ const ProductCarousel = ({title,ItemOnly,screenDimensions,products,navigation}:{
                                 </Button>
                             </TouchableOpacity>
                         </View>
-                        {!ItemOnly ?    
-                        <View>
+                     
 
                         <Carousel
                                 data={products}
@@ -142,7 +151,7 @@ const ProductCarousel = ({title,ItemOnly,screenDimensions,products,navigation}:{
                                 inactiveSlideScale={1}
                                 activeSlideAlignment={'start'}
                                 removeClippedSubviews={false}
-                                // loop
+                                loop
                                 enableMomentum={true}
                                 autoplay
                                 renderItem={({item}) => ProductCard({
@@ -152,28 +161,7 @@ const ProductCarousel = ({title,ItemOnly,screenDimensions,products,navigation}:{
                             })}           
                                 sliderWidth={screenDimensions}
                                 itemWidth={screenDimensions * 0.5}/>
-                        </View>
 
-                            :
-
-                         
-                        <View style={{display:'flex',flexWrap:'wrap',flexDirection:'row'}}>
-                         
-                    {  products.map(product=>{
-
-                       return <ProductCard
-                       key={product._id}
-                        item={product}
-                        width= {screenDimensions}
-                        navigation={navigation}
-                        />
-                    })}
-                       
-                    
-                            
-                            </View>
-
-                    }
                     </View>
   )
 }

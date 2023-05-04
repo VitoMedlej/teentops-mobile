@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import {
   
-    Platform,
-    StatusBar,
-    StyleSheet,
     Image,
     Text,
     View,
-    TouchableOpacity,
     Dimensions,
     Linking,
+    TouchableOpacity,
   } from 'react-native';
-  import {SafeAreaView, SafeAreaProvider, SafeAreaInsetsContext, useSafeAreaInsets, initialWindowMetrics} from 'react-native-safe-area-context';
+  import {SafeAreaView} from 'react-native-safe-area-context';
 import Navbar from '../../Components/Navbar/Navbar';
 import { Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -40,7 +37,7 @@ const EmptyCart = ({screenHeight}) => {
   </Text>
 </View>
 }
-const CartList = ({cartItems}: {cartItems:any[]})  => {
+const CartList = ({navigation,cartItems}: {navigation:any,cartItems:any[]})  => {
   return <>
   
   <View style={{padding:5,marginVertical:10,paddingVertical:10,backgroundColor:'white'}}>
@@ -50,7 +47,8 @@ const CartList = ({cartItems}: {cartItems:any[]})  => {
   
  {cartItems && cartItems.length > 0 && 
  
- cartItems.map(item=>{ return <View 
+ cartItems.map(item=>{ return <TouchableOpacity 
+  onPress={()=>navigation.navigate('Product',{item})}
   key={item.img}
   style={{display:'flex',borderBottomWidth:1,borderColor:'#e6e6e6',margin:5,backgroundColor:'white',
   flexDirection:'row'
@@ -63,7 +61,7 @@ const CartList = ({cartItems}: {cartItems:any[]})  => {
                         }}
                             resizeMode={'cover'}
                             source={{
-                            uri: `${item.img}` || 'https://ucarecdn.com/74ada732-9dbd-4f77-83c4-3b9af9cf3889/'
+                            uri: `${item.images[0]}` || 'https://ucarecdn.com/74ada732-9dbd-4f77-83c4-3b9af9cf3889/'
                         }}/>
 
                         <View style={{marginHorizontal:10,marginVertical:5}}>
@@ -73,19 +71,21 @@ const CartList = ({cartItems}: {cartItems:any[]})  => {
                           <Text style={{fontWeight:'500'}}>
                           ${item?.price}
                           </Text>
-                          <Button textColor={'red'}  style={{display:'flex',padding:0}}>
+                          <Button 
+                          
+                          textColor={'red'}  style={{display:'flex',padding:0}}>
                             Delete
                           </Button>
                         </View>
-  </View>
+  </TouchableOpacity>
   })}
 
 
   </View>
   <View style={{backgroundColor:'white',
   paddingVertical:20,marginVertical:15}}>
-                        <Button
-                     
+                        <Button 
+                          onPress={()=>navigation.navigate('Products')}
                          style={{marginVertical:10,backgroundColor:'white',borderWidth:1,borderColor:'#6145ff',borderRadius:4,marginHorizontal:5}}>
                           <Text style={{color:'#6145ff'}}>
                           Continue Shopping
@@ -94,9 +94,9 @@ const CartList = ({cartItems}: {cartItems:any[]})  => {
                         <Button 
                         onPress={()=>{
                           Linking.openURL(`whatsapp://send?text=Hello, I would like to place an order:${
-                            ['name1','name2','name3','اسم',''].map(i=>{
-                              if (i?.length < 1) return;
-                              return `\n${i}`
+                            cartItems && cartItems.map(i=>{
+                              if (i?.title?.length < 1) return;
+                              return `\n${i?.title} - $${i?.price}`
                             })
                           }
                           &phone=96181826445`)
@@ -112,7 +112,6 @@ const CartList = ({cartItems}: {cartItems:any[]})  => {
 }
 const Cart = ({navigation}) => {
 
-  const screenDimensions = Number(Dimensions.get('screen').width) || 350;
   const screenHeight = Number(Dimensions.get('screen').height) || 650;
   const [cartItems,setItems] =  useState([])
 
@@ -131,7 +130,7 @@ const Cart = ({navigation}) => {
   return (
     <SafeAreaView>
       <Navbar navigation={navigation} isHome={true} />
-   {cartItems.length < 1 ? <EmptyCart screenHeight={screenHeight}/> : <CartList cartItems={cartItems}/>}
+   {cartItems.length < 1 ? <EmptyCart screenHeight={screenHeight}/> : <CartList navigation={navigation} cartItems={cartItems}/>}
     </SafeAreaView>
   )
 }

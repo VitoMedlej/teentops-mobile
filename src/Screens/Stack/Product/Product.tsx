@@ -7,7 +7,9 @@ import { Divider ,Button, Snackbar} from 'react-native-paper'
 import {  pushState, saveState } from '../../../Utils/Local'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export interface ProductType{title:string,category?:string,images:string[],_id:string,price:number,description?:string}
+export interface ProductType{title:string,category?:string,
+    description?:string,
+    images:string[],_id:string,price:number}
 const ItemImages = ({width,height,imgHeight,item}) => {
     return <>
     
@@ -24,9 +26,9 @@ const ItemImages = ({width,height,imgHeight,item}) => {
             width: width,
             height: imgHeight ? imgHeight : width
         }}
-            resizeMode={'cover'}
+            resizeMode={'contain'}
             source={{
-            uri: `${item.img}`
+            uri: `${item}`
         }}/>
 
 </View>
@@ -34,9 +36,9 @@ const ItemImages = ({width,height,imgHeight,item}) => {
   
     </>
 }
-const CarouselPagination = ({activeDotIndex}) => {
+const CarouselPagination = ({length,activeDotIndex}) => {
     return <Pagination
-            dotsLength={Number([1,2,3].length || 1)}
+            dotsLength={Number(length || 1)}
               activeDotIndex={activeDotIndex}
               activeOpacity={1}
               inactiveDotOpacity={0.4}
@@ -54,8 +56,9 @@ const CarouselPagination = ({activeDotIndex}) => {
               inactiveDotScale={0.6}
             />
 }
-const Product = ({navigation,products}:{products:ProductType[],navigation:any}) => {
+const Product = ({route ,navigation}:{route :any,navigation:any}) => {
     
+    const product :ProductType | undefined = route.params?.item
     const screenDimensions = Number(Dimensions.get('screen').width) || 350;
     const [activeDotIndex,setActiveDotIndex] = useState(0)
     const [Active,setActive] = useState(false)
@@ -79,14 +82,14 @@ const Product = ({navigation,products}:{products:ProductType[],navigation:any}) 
         
         <Carousel
      
-                    data={products}
+                    data={product?.images}
                     inactiveSlideOpacity={1}
                     inactiveSlideScale={1}
                     activeSlideAlignment={'start'}
                     removeClippedSubviews={false}                    
                     enableMomentum={true}
                       loop
-                      autoplay
+                      scrollEnabled
                     renderItem={(props) => ItemImages({
                     ...props,
                     width: screenDimensions
@@ -95,26 +98,27 @@ const Product = ({navigation,products}:{products:ProductType[],navigation:any}) 
                     sliderWidth={screenDimensions}
                     itemWidth={screenDimensions}
                     useScrollView={false}/>
-        <CarouselPagination activeDotIndex={activeDotIndex}/>
+        <CarouselPagination length={product?.images?.length} activeDotIndex={activeDotIndex}/>
 
 
 
         <View style={{paddingHorizontal:10, backgroundColor:'white'}}>
             <Text style={{color:'#6145ff'}}>
-                DSP
+                {product?.category}
             </Text>
             <Text style={{color:'black',fontSize:21,paddingVertical:5,fontWeight:'500'}}>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Saepe.
+                {product?.title || 'Product Name'}
+
             </Text>
             <Text style={{color:'black',fontSize:25,fontWeight:'700'}}>
-                    $20
+                    ${product?.price || 'Price'}
             </Text>
 
                 <TouchableOpacity>
 
             <Button 
             onPress={()=>
-            {    addToCart('usercart2',{title:'new',category:'xyz',images:['foo'],_id:'222',price:100,description:'fooe'}),
+            {    addToCart('usercart2',{title:product?.title || 'Product Name',category:product?.category,images:product?.images ? [product?.images[0]] : ['https://e7.pngegg.com/pngimages/829/733/png-clipart-logo-brand-product-trademark-font-not-found-logo-brand.png'] ,_id:product?._id,price:product?.price || 0,description:product?.description}),
                 setActive(true)}
             }
             style={{borderWidth:1,marginTop:16,borderColor:'#6145ff'}}>
@@ -156,7 +160,7 @@ const Product = ({navigation,products}:{products:ProductType[],navigation:any}) 
    
     <View style={{marginVertical:20,padding:10,backgroundColor:'white'}}>
             <Text style={{color:'#2b2b2b',paddingBottom:10}}>
-                Product Id : XYZ-123-456
+                Product Id : {product?._id}
             </Text>
     <Divider />
             <Text style={{fontSize:16,fontWeight:'600',color:'green',paddingTop:10}}>
@@ -172,7 +176,7 @@ const Product = ({navigation,products}:{products:ProductType[],navigation:any}) 
             </Text>
     <Divider />
             <Text style={{fontSize:16,fontWeight:'300',color:'#2b2b2b',paddingVertical:10}}>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat neque commodi est laborum nostrum voluptatem quis, repudiandae, dignissimos deserunt amet voluptatibus ullam nisi possimus fuga?
+                    {product?.description}
             </Text>
     </View>
   

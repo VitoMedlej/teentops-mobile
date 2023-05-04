@@ -5,12 +5,13 @@ import {
     Image,
     Dimensions,
     View,
+    Text,
     TouchableOpacity
 } from 'react-native';
 
 import Navbar from '../../Components/Navbar/Navbar';
 import Carousel from 'react-native-snap-carousel';
-import ProductCarousel from '../../Components/ProductCarousel/ProductCarousel';
+import ProductCarousel, { ProductCard } from '../../Components/ProductCarousel/ProductCarousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import req from '../../../dummy.json';
 
@@ -265,6 +266,13 @@ const Home = ({navigation, route}) => {
                     title="New Arrivals"
                     products={products?.slice(25,30)}
                     screenDimensions={screenDimensions}/> */}
+ <ProductCarousel
+                    navigation={navigation}
+                    title="New Arrivals"
+                    products={products?.slice(25,27)}
+                    screenDimensions={screenDimensions}/>
+
+         
 
             </ScrollView>
         </SafeAreaView>

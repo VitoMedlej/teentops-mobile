@@ -1,16 +1,16 @@
-import React, {useState} from 'react'
-import {View, ScrollView, Image, TouchableOpacity} from 'react-native'
-import Navbar from '../../../Components/Navbar/Navbar'
-import {Item} from 'react-native-paper/lib/typescript/src/components/Drawer/Drawer'
-import Carousel from 'react-native-snap-carousel'
-import {Pagination} from 'react-native-snap-carousel'
-import {ProductCard, products} from '../../../Components/ProductCarousel/ProductCarousel'
+import React from 'react'
+import {View, ScrollView, FlatList} from 'react-native'
+import {ProductCard} from '../../../Components/ProductCarousel/ProductCarousel'
 import {Dimensions} from 'react-native'
-import {Divider, Searchbar} from 'react-native-paper';
-import FilterModal from './FilterModal'
-import {Modal, Button, Portal, Text, Provider} from 'react-native-paper';
+import { Searchbar} from 'react-native-paper';
+import {Button} from 'react-native-paper';
+import res from '../../../../dummy.json';
+import { ProductType } from '../Product/Product';
+
 
 const Products = ({navigation}) => {
+    let products : ProductType[] | any = res?.products;
+    
     const screenDimensions = Number(Dimensions.get('screen').width) || 350;
     const [visible,
         setVisible] = React.useState(false);
@@ -48,14 +48,25 @@ const Products = ({navigation}) => {
        
         </View>
         <View style={{backgroundColor:'white',paddingTop:20,marginHorizontal:5,display:'flex',flexDirection:'row',justifyContent:'space-between',flexWrap:'wrap'}}>
-            {[1,2,3,4,5].map(i=>{
+            {/* {products && products?.length > 0 && products.map(product=>{
                 return <ProductCard 
                 styles={{padding:5
                 
                 }}
                 imgWidth={200}
-                key={i} item={{title:'XYZ name' ,price:12.99,img:'https://ucarecdn.com/99054dfd-cf85-4e50-a6ff-4abed39fc4fe/'}} width={screenDimensions / 2.1} navigation={navigation}/>
-            })}
+                key={product._id} item={{_id:product?._id,title:product?.title ,category:product?.category,price:product?.price,images:product?.images}} width={screenDimensions / 2.1} navigation={navigation}/>
+            })} */}
+            <FlatList
+             data={products.slice(0,100)}
+             renderItem={({item}:any) => <ProductCard 
+             styles={{padding:5
+             
+             }}
+             imgWidth={200}
+             item={item} width={screenDimensions / 2.1} navigation={navigation}/>}
+            
+             keyExtractor={item => item.id}
+            />
         </View>
     </ScrollView> 
 
