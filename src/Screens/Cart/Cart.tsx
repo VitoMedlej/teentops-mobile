@@ -16,9 +16,9 @@ import { ProductType } from '../Stack/Product/Product';
 
 
 
-const EmptyCart = ({screenHeight}) => {
+export const EmptyCart = ({screenHeight,title,desc,uri}:any) => {
   
-  return <View style={{height:screenHeight,transform:[{translateY: -Number(screenHeight * 0.1)}],display:'flex',justifyContent:'center',alignItems:'center',alignContent:'center',margin:0}}>
+  return<View style={{height:screenHeight,transform:[{translateY: -Number(screenHeight * 0.1)}],display:'flex',justifyContent:'center',alignItems:'center',alignContent:'center',margin:0}}>
  
   <Image
                             style={{
@@ -27,17 +27,19 @@ const EmptyCart = ({screenHeight}) => {
                         }}
                             resizeMode={'cover'}
                             source={{
-                            uri: 'https://cdn-icons-png.flaticon.com/512/2762/2762885.png'
+                            uri: uri ? uri :'https://cdn-icons-png.flaticon.com/512/2762/2762885.png'
                         }}/>
   <Text style={{color:'black',fontWeight:'700',fontSize:18,paddingTop:5}}>
-      Your Cart Is Empty!
+      {title ? title : 'Your Cart Is Empty!'}
   </Text>
   <Text style={{color:'black',fontWeight:'300',fontSize:12,paddingTop:5}}>
-      Add some products to your cart.
+      
+      {desc ? desc : 'Add some products to your cart.'}
+  
   </Text>
-</View>
+  </View>
 }
-const CartList = ({navigation,cartItems}: {navigation:any,cartItems:any[]})  => {
+const CartList = ({navigation,cartItems}: {navigation:any,cartItems:any[]|undefined})  => {
   return <>
   
   <View style={{padding:5,marginVertical:10,paddingVertical:10,backgroundColor:'white'}}>
@@ -45,11 +47,13 @@ const CartList = ({navigation,cartItems}: {navigation:any,cartItems:any[]})  => 
       My Cart
     </Text>
   
- {cartItems && cartItems.length > 0 && 
+ {cartItems && cartItems?.length > 0 && 
  
- cartItems.map(item=>{ return <TouchableOpacity 
-  onPress={()=>navigation.navigate('Product',{item})}
-  key={item.img}
+ cartItems.map((item:ProductType)=>{ 
+  
+  return <TouchableOpacity 
+  onPress={()=>item && navigation?.navigate('Product',{item})}
+  key={`${item?._id}`}
   style={{display:'flex',borderBottomWidth:1,borderColor:'#e6e6e6',margin:5,backgroundColor:'white',
   flexDirection:'row'
   }}>
@@ -61,7 +65,7 @@ const CartList = ({navigation,cartItems}: {navigation:any,cartItems:any[]})  => 
                         }}
                             resizeMode={'cover'}
                             source={{
-                            uri: `${item.images[0]}` || 'https://ucarecdn.com/74ada732-9dbd-4f77-83c4-3b9af9cf3889/'
+                            uri: `${item?.images && item.images[0]}` || 'https://ucarecdn.com/74ada732-9dbd-4f77-83c4-3b9af9cf3889/'
                         }}/>
 
                         <View style={{marginHorizontal:10,marginVertical:5}}>
@@ -85,7 +89,7 @@ const CartList = ({navigation,cartItems}: {navigation:any,cartItems:any[]})  => 
   <View style={{backgroundColor:'white',
   paddingVertical:20,marginVertical:15}}>
                         <Button 
-                          onPress={()=>navigation.navigate('Products')}
+                          onPress={()=>navigation?.navigate('Products')}
                          style={{marginVertical:10,backgroundColor:'white',borderWidth:1,borderColor:'#6145ff',borderRadius:4,marginHorizontal:5}}>
                           <Text style={{color:'#6145ff'}}>
                           Continue Shopping

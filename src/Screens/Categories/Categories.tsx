@@ -72,11 +72,11 @@ const Cart = ({navigation}) => {
             <Divider/>
             <View style={{borderTopWidth:1,paddingTop:15,borderColor:'#e4e4e4',display:'flex',flexDirection:'row',justifyContent:'space-around',flexWrap:'wrap'}}>
 {                Cates.map(i=>{
-                  return <View style={{marginVertical:15,width:screenDimensions / 2.2,
+                  return <View key={i.title} style={{marginVertical:15,width:screenDimensions / 2.2,
                   
                   alignItems:'center'}}>
                     <TouchableOpacity onPress={
-                        ()=>navigation.navigate('Home', { screen: 'Products' })
+                        ()=> navigation.navigate('Home', { screen: 'Products', params:{category:i.title.toLocaleLowerCase()} })
                     }>
 
                       <Image

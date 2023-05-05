@@ -4,11 +4,16 @@ import {
     Text,
     View,
     TouchableOpacity,
+    Dimensions,
 } from 'react-native';
 import {Button} from 'react-native-paper';
 
 import Carousel from 'react-native-snap-carousel';
 import { ProductType } from '../../Screens/Stack/Product/Product';
+import { FlashList } from '@shopify/flash-list';
+
+
+
 
 export const ProductCard = ({imgWidth,styles,item,width,navigation}:{
     styles?:any,
@@ -24,8 +29,6 @@ export const ProductCard = ({imgWidth,styles,item,width,navigation}:{
         marginVertical:5,
         ...styles,
     }}>
-
-
             <Image
                 style={{
                 display: 'flex',
@@ -161,6 +164,8 @@ const ProductCarousel = ({title,ItemOnly,screenDimensions,products,navigation}:{
                             })}           
                                 sliderWidth={screenDimensions}
                                 itemWidth={screenDimensions * 0.5}/>
+
+
 
                     </View>
   )

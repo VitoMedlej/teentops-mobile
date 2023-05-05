@@ -14,6 +14,9 @@ import Carousel from 'react-native-snap-carousel';
 import ProductCarousel, { ProductCard } from '../../Components/ProductCarousel/ProductCarousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import req from '../../../dummy.json';
+import { FlashList } from '@shopify/flash-list';
+// import { ProductType } from '../Stack/Product/Product';
+// import { Button } from 'react-native-paper';
 
 const images = [
     {
@@ -41,11 +44,12 @@ const categoryImage = [
     }
 ]
 
-const Item = ({width, item, height, imgHeight, navigation} : {
+const Item = ({width, item, height,category, imgHeight, navigation} : {
     width: number,
     item: {
         img: string
     },
+    category : string | null,
     navigation: any,
     height?: number,
     imgHeight?: number
@@ -57,7 +61,7 @@ const Item = ({width, item, height, imgHeight, navigation} : {
             ? height
             : 200
     }}>
-        <TouchableOpacity onPress={() => navigation.navigate('Products')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Products',{category })}>
 
             <Image
                 style={{
@@ -93,16 +97,20 @@ const SmallItem = ({item, screenDimensions}) => {
         </TouchableOpacity>
     </View>
 }
+
 const Home = ({navigation, route}) => {
     const screenDimensions = Number(Dimensions.get('screen').width) || 100;
     const [products,setProducts] = useState([])
     const fetchAndSaveProducts = async () => {
         try {
             // Get both locally saved products and the ones on the cloud
-            // const req = await fetch(`https://getpantry.cloud/apiv1/pantry/ee14221e-031c-48db-92f1-d5a3efd3299e/basket/products`)
-            // let res =  req.json() ;
+            const req = await fetch(`https://getpantry.cloud/apiv1/pantry/ee14221e-031c-48db-92f1-d5a3efd3299e/basket/products`)
+            let res : any = await  req.json() ;
+            // let res : any = req.products ;
+            console.log('fetch called')
             // const res = JSON.parse(stringifiedRes?.products) ;
-            let res =  req?.products || []
+            // let res =  req?.products || []
+             res  =  res?.products || []
             const localProducts = await AsyncStorage.getItem('LocalProducts')
             
             // incase fetching cloud products fails, stay on local ones and vise versa
@@ -153,42 +161,38 @@ const Home = ({navigation, route}) => {
                     renderItem={(text) => Item({
                     ...text,
                     width: screenDimensions,
-                    navigation
+                    navigation,
+                    category : null
                 })}
                     sliderWidth={screenDimensions}
                     itemWidth={screenDimensions}
                     useScrollView={true}/>
-                <View
+
+
+
+<View
                     style={{
                     display: 'flex',
                     flexDirection: 'row',
+                    minHeight:2,
                     justifyContent: 'space-evenly'
                 }}>
+<View
+style={{minHeight:2,width:Dimensions.get('screen').width - 5 ,display:'flex',flexDirection:'row'}}
+>
+                        <FlashList
+                   estimatedItemSize={2}
+                   numColumns={2}
+                   data={categoryImage}
+                   renderItem={({item})=> SmallItem({item,screenDimensions})}/>
+                   
+</View>
 
-                    {categoryImage.map(item => {
-                        return <View
-                            key={item.img}
-                            style={{
-                            height: 100
-                        }}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                navigation.navigate('Products')
-                            }}>
+                    {/* {categoryImage.map(item => {
 
-                                <Image
-                                    style={{
-                                    width: screenDimensions / 2.01,
-                                    height: 100
-                                }}
-                                    resizeMode={'contain'}
-                                    source={{
-                                    uri: `${item.img}`
-                                }}/>
-                            </TouchableOpacity>
-                        </View>
+                        return <SmallItem key={item.img} screenDimensions={screenDimensions} item={item}/>
                     })
-}
+} */}
                 </View>
                 
 
@@ -203,7 +207,7 @@ const Home = ({navigation, route}) => {
                         title="New Arrivals"
                         products={products?.slice(9,18)}
                         screenDimensions={screenDimensions}/> */}
-                <Carousel
+                {/* <Carousel
                     removeClippedSubviews={false}
                     data={[
                     {
@@ -224,19 +228,35 @@ const Home = ({navigation, route}) => {
                 })}
                     sliderWidth={screenDimensions}
                     itemWidth={screenDimensions}
-                    useScrollView={true}/>
-
+                    useScrollView={true}/> */}
+                <Item
+                    width={screenDimensions}
+                    height={150}
+                    navigation={navigation}
+                    item={{ img: 'https://www.ishtari.com/image/data/system_banner/10000/2200/2047/moulinex-webb.png' }} category={''}                />
                 <View
                     style={{
                     display: 'flex',
                     flexDirection: 'row',
+                    minHeight:2,
                     justifyContent: 'space-evenly'
                 }}>
+<View
+style={{minHeight:2,width:Dimensions.get('screen').width - 5 ,display:'flex',flexDirection:'row'}}
+>
+                        <FlashList
+                   estimatedItemSize={2}
+                   numColumns={2}
+                   data={categoryImage}
+                   renderItem={({item})=> SmallItem({item,screenDimensions})}/>
+                   
+</View>
 
-                    {categoryImage.map(item => {
+                    {/* {categoryImage.map(item => {
+
                         return <SmallItem key={item.img} screenDimensions={screenDimensions} item={item}/>
                     })
-}
+} */}
                 </View>
 
                 <ProductCarousel
@@ -249,12 +269,15 @@ const Home = ({navigation, route}) => {
                     navigation={navigation}
                     height={240}
                     imgHeight={240}
+                    category={null}
                     width={screenDimensions}
                     item={{
                     img: 'https://www.ishtari.com/image/data/system_banner/10000/1800/1719/homepage-automotive-app.png'
                 }}/>
                 <Item
                     navigation={navigation}
+                    category={'electronics'}
+
                     height={240}
                     imgHeight={240}
                     width={screenDimensions}
@@ -266,14 +289,143 @@ const Home = ({navigation, route}) => {
                     title="New Arrivals"
                     products={products?.slice(25,30)}
                     screenDimensions={screenDimensions}/> */}
- <ProductCarousel
+ {/* <ProductCarousel
                     navigation={navigation}
                     title="New Arrivals"
                     products={products?.slice(25,27)}
+                    screenDimensions={screenDimensions}/> */}
+                 {/* <View
+                        style={{
+                        margin: 6,
+                        marginVertical: 15
+                    }}>
+                        <View
+                            style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginVertical: 10,
+                            justifyContent: 'space-between'
+                        }}>
+                            <Text
+                                style={{
+                                fontSize: 25,
+                                fontWeight: '500'
+                            }}>
+                                More Products
+                            </Text>
+                            <TouchableOpacity>
+
+                                <Button
+                                    style={{
+                                    width: 150,
+                                    padding: 0,
+                                    alignItems: 'flex-end'
+                                }}>
+                                    View All
+                                </Button>
+                            </TouchableOpacity>
+                        </View>
+                     
+
+<View
+style={{minHeight:2 ,width:Dimensions.get('screen').width - 5 ,display:'flex',backgroundColor:'white',flexDirection:'row'}}
+>
+
+    <FlashList 
+        numColumns={2}
+        data={products.slice(0,8)}
+        renderItem={({ item }:ProductType | any) => 
+    (    
+
+        <View 
+        style={{
+            backgroundColor: 'white',
+            width:  screenDimensions / 2.1,
+            marginVertical:5,
+        }}>
+      <TouchableOpacity 
+
+onPress={()=>navigation.navigate('Product',{
+    item
+})}>
+
+                <Image
+                    style={{
+                    display: 'flex',
+                    alignContent: 'center',
+                    width: screenDimensions - 5,
+                    maxWidth: 190,
+                    height: 200
+                }}
+                    resizeMode={'contain'}
+                    source={{
+                    uri: `${item.images[0]}`
+                }}/>
+</TouchableOpacity>
+
+                <View
+                    style={{
+                }}>
+
+                    <Text
+                    style={{
+                         paddingVertical:4,
+                         paddingHorizontal:2
+    
+                    }}>
+                    {item.category}
+                    </Text>
+       
+                    <Text
+                    onPress={()=>{navigation.navigate('Product',{item})}}
+
+                     numberOfLines={2} 
+                    style={{
+                        paddingHorizontal:2
+,
+                        width : 200,
+                         fontSize:19,
+                         fontWeight: '700',
+                         textAlign:'left'
+                    }}>
+    
+                    {item.title}
+    
+                    </Text>
+                    
+                </View>
+
+                <Text style={{
+                    fontWeight: '900',
+                    padding:2,
+                    textAlign:'left',color:'green'
+                }}>
+                    ${item.price}
+                </Text>
+              
+
+        </View>
+
+
+   )
+        
+        }
+        
+        estimatedItemSize={9}
+        />
+</View>
+   
+
+
+
+                    </View>
+          */}
+  <ProductCarousel
+                    navigation={navigation}
+                    title="New Arrivals"
+                    products={products?.slice(18,20)}
                     screenDimensions={screenDimensions}/>
-
-         
-
             </ScrollView>
         </SafeAreaView>
     )
