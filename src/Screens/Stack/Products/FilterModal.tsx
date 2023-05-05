@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal, Portal, Text, Button, Provider } from 'react-native-paper';
+import { Modal, Portal, Text,  Provider } from 'react-native-paper';
 
 const FilterModal = ({visible,hideModal}) => {
   

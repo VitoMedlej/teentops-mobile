@@ -5,7 +5,6 @@ import {
     Image,
     Dimensions,
     View,
-    Text,
     TouchableOpacity
 } from 'react-native';
 
@@ -13,7 +12,6 @@ import Navbar from '../../Components/Navbar/Navbar';
 import Carousel from 'react-native-snap-carousel';
 import ProductCarousel, { ProductCard } from '../../Components/ProductCarousel/ProductCarousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import req from '../../../dummy.json';
 import { FlashList } from '@shopify/flash-list';
 // import { ProductType } from '../Stack/Product/Product';
 // import { Button } from 'react-native-paper';

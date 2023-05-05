@@ -4,13 +4,11 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Dimensions,
 } from 'react-native';
 import {Button} from 'react-native-paper';
 
 import Carousel from 'react-native-snap-carousel';
 import { ProductType } from '../../Screens/Stack/Product/Product';
-import { FlashList } from '@shopify/flash-list';
 
 
 

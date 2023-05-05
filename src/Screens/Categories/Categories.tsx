@@ -1,9 +1,6 @@
 import React from 'react'
 import {
-  
-    Platform,
-    StatusBar,
-    StyleSheet,
+
     Image,
     Text,
     View,
@@ -11,7 +8,7 @@ import {
     Dimensions,
     ScrollView,
   } from 'react-native';
-  import {SafeAreaView, SafeAreaProvider, SafeAreaInsetsContext, useSafeAreaInsets, initialWindowMetrics} from 'react-native-safe-area-context';
+  import {SafeAreaView} from 'react-native-safe-area-context';
 import Navbar from '../../Components/Navbar/Navbar';
 import { Button, Divider } from 'react-native-paper';
 
