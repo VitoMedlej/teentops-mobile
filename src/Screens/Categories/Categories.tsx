@@ -8,7 +8,7 @@ import {
     Dimensions,
     ScrollView,
   } from 'react-native';
-  import {SafeAreaView} from 'react-native-safe-area-context';
+//   import {SafeAreaView} from 'react-native-safe-area-context';
 import Navbar from '../../Components/Navbar/Navbar';
 import { Button, Divider } from 'react-native-paper';
 
@@ -58,7 +58,7 @@ const Cart = ({navigation}) => {
   const screenHeight = Number(Dimensions.get('screen').height) || 650;
 
   return (
-    <SafeAreaView>
+    <>
       <Navbar navigation={navigation} isHome={true} />
       <ScrollView style={{padding:5,paddingVertical:10,backgroundColor:'white'}}>
             <Button onPress={()=>navigation.navigate('Products')}   style={{marginBottom:5}} contentStyle={{flexDirection: 'row-reverse'}} icon={'skip-next-outline'}>
@@ -97,7 +97,7 @@ const Cart = ({navigation}) => {
                 })}
             </View>
 </ScrollView>
-    </SafeAreaView>
+    </>
   )
 }
 

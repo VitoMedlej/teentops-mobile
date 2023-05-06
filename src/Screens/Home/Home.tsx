@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
-    SafeAreaView,
+    // SafeAreaView,
     ScrollView,
     Image,
     Dimensions,
@@ -141,9 +141,7 @@ const Home = ({navigation, route}) => {
     }, [])
     
     return (
-        <SafeAreaView style={{
-            backgroundColor: 'white'
-        }}>
+        <>
             <ScrollView>
 
                 <Navbar isHome={route.name === 'Home'} navigation={navigation}/>
@@ -425,7 +423,7 @@ onPress={()=>navigation.navigate('Product',{
                     products={products?.slice(18,20)}
                     screenDimensions={screenDimensions}/>
             </ScrollView>
-        </SafeAreaView>
+        </>
     )
 }
 

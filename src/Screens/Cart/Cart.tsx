@@ -8,7 +8,7 @@ import {
     Linking,
     TouchableOpacity,
   } from 'react-native';
-  import {SafeAreaView} from 'react-native-safe-area-context';
+  // import {SafeAreaView} from 'react-native-safe-area-context';
 import Navbar from '../../Components/Navbar/Navbar';
 import { Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -132,10 +132,10 @@ const Cart = ({navigation}) => {
   }, [])
   
   return (
-    <SafeAreaView>
+    <>
       <Navbar navigation={navigation} isHome={true} />
    {cartItems.length < 1 ? <EmptyCart screenHeight={screenHeight}/> : <CartList navigation={navigation} cartItems={cartItems}/>}
-    </SafeAreaView>
+    </>
   )
 }
 

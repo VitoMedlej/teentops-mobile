@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "runtimeVersion": "2.718",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -32,6 +33,10 @@
         "projectId": "d881799f-b23d-4228-97fa-607d30c9b9fe"
       }
     },
-    "owner": "mhmdmedlej"
+    "owner": "mhmdmedlej",
+
+    "updates": {
+      "url": "https://u.expo.dev/d881799f-b23d-4228-97fa-607d30c9b9fe"
+    }
   }
 }

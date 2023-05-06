@@ -7,7 +7,7 @@ import Cart from './src/Screens/Cart/Cart'
 import HomeStack from './src/Screens/Home/HomeStack'
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {SafeAreaView, SafeAreaProvider, SafeAreaInsetsContext, useSafeAreaInsets, initialWindowMetrics} from 'react-native-safe-area-context';
+// import { SafeAreaProvider} from 'react-native-safe-area-context';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {Button} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,7 +19,7 @@ const Tab = createMaterialBottomTabNavigator();
 export default function App() {
     return (
 
-        <SafeAreaProvider>
+        <>
            
             <NavigationContainer>
                 <StatusBar backgroundColor='gray'/>
@@ -92,7 +92,7 @@ name="Categories" component={Categories}/>
             
             </NavigationContainer>
       
-        </SafeAreaProvider>
+        </>
 
     );
 }
